@@ -1,0 +1,46 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+directive @key(fields: String!) on OBJECT | INTERFACE
+
+directive @extends on OBJECT | INTERFACE
+
+directive @external on OBJECT | FIELD_DEFINITION
+
+directive @requires(fields: String!) on FIELD_DEFINITION
+
+directive @provides(fields: String!) on FIELD_DEFINITION
+
+type Student {
+  id: String!
+  name: String!
+  email: String!
+  dob: String!
+  age: Int
+  totalCount: Float!
+}
+
+type Query {
+  getAllStudents(limit: Int, offset: Int): [Student!]!
+  getStudentById(id: String!): Student!
+}
+
+type Mutation {
+  createStudent(createStudentInput: CreateStudentInput!): Student!
+  updateStudent(updateStudentInput: UpdateStudentInput!): Student!
+  removeStudent(id: String!): Student!
+}
+
+input CreateStudentInput {
+  name: String!
+  email: String!
+  dob: String!
+}
+
+input UpdateStudentInput {
+  id: String!
+  name: String!
+  email: String!
+  dob: String!
+}

@@ -1,0 +1,16 @@
+:host ::ng-deep th.headerCustomClass {
+  color: #fff;
+  background-color: #3f51b5;
+}
+
+.loading-container {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.upload-context-info {
+  font: 13px;
+  color: red;
+}
