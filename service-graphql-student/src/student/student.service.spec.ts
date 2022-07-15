@@ -1,3 +1,4 @@
+import { NotFoundException } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { CreateStudentInput } from './dto/create-student.input';
@@ -76,7 +77,7 @@ describe('StudentService', () => {
     })
   })
 
-  it('### A student record should be find ###', async () => {
+  it('### A student record should be found ###', async () => {
     const studentObj = {
       id: 'dummy-id',
       name: 'rajeev',
@@ -89,12 +90,31 @@ describe('StudentService', () => {
     expect(foundObj).toMatchObject(studentObj);
   });
 
+  it('### A student record should be not found ###', async () => {
+    const studentObj = {
+      id: 'dummy-',
+      name: 'rajeev',
+      email: 'rajeevmehta@fortude.co',
+      dob: '1994-09-12T18:30:00.000Z'
+    }
+    studentRepo.findOneBy.mockReturnValue(new NotFoundException(`Record cannot find by id ${studentObj.id}}`));
+    const foundObj = await service.findStudentById(studentObj.id);
+    expect(foundObj).toHaveProperty('status', 404);
+  });
+
   it('### A student record should be updated ###', async () => {
     const updatedStudent = service.updateStudentRecord('dummy-id', updateDto);
     expect(updatedStudent).toEqual(updateDto);
   })
 
   it('### A student record should be deleted ###', async () => {
+    const studentObj = {
+      id: 'dummy-id',
+      name: 'rajeev',
+      email: 'rajeevmehta@fortude.co',
+      dob: '1994-09-12T18:30:00.000Z'
+    }
+    studentRepo.findOneBy.mockReturnValue(studentObj);
     const result = await service.removeStudentRecord('dummy-id');
     expect(result).toEqual(updateDto);
   })
@@ -103,7 +123,6 @@ describe('StudentService', () => {
     const skip = 0;
     const take = 5;
     const result = await service.findAllStudents(skip, take);
-    console.log(result);
     expect(result).toContainEqual({
       id: 'dummy-id-2',
       name: 'Geo',
