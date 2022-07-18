@@ -1,202 +1,206 @@
-<P class="upload-context-info">*Only xlsx files are allowed.</P>
-<kendo-upload
-  [restrictions]="this.uploadFileRestrictions"
-  [saveUrl]="this.uploadSaveUrl"
-  [multiple]="false"
-  [autoUpload]="false"
-  name="dataFile"
-  (success)="this.success($event)"
->
-</kendo-upload>
-<kendo-grid
-  [data]="this.view | async"
-  [pageSize]="this.gridState.take"
-  [skip]="this.gridState.skip"
-  [sort]="this.gridState.sort"
- [pageable]="{
-  info: info,
-  type: type,
-  pageSizes: pageSizes,
-  previousNext: previousNext,
-  position: position
-}"
-
-(pageChange)="pageChange($event)"
-  [sortable]="false"
-  (dataStateChange)="this.onStateChange($event)"
-  (edit)="this.editHandler($event)"
-  (cancel)="this.cancelHandler($event)"
-  (save)="this.saveHandler($event)"
-  (remove)="this.removeHandler($event)"
-  (add)="this.addHandler($event)"
-  [navigable]="true"
-  [loading]="!this.editService?.querySubscription?.closed"
-  (sortChange) = "this.onSortChange($event)"
-  [sortable]="this.sortSettings"
->
-  <ng-template kendoGridToolbarTemplate>
-    <button kendoGridAddCommand>Add new</button>
-  </ng-template>
-
-  <!-- Column ID -->
-  <kendo-grid-column
-    field="id"
-    title="ID"
-    [editable]="false"
-    [headerClass]="'headerCustomClass'"
-    [width]="150"
-  >
-    <ng-template kendoGridCellTemplate let-dataItem>
-      {{
-        ((dataItem || {}).id || "").length > 6
-          ? (dataItem.id | slice: 0:6) + ".."
-          : dataItem.id
-      }}
-    </ng-template>
-  </kendo-grid-column>
-
-  <!-- Column Name -->
-  <kendo-grid-column
-    field="name"
-    title="Name"
-    [headerClass]="'headerCustomClass'"
-  >
-    <ng-template
-      kendoGridEditTemplate
-      let-column="column"
-      let-formGroup="formGroup"
+<div class="container">
+  <div class="row">
+    <h2>{{ this.title }}</h2>
+    <P class="upload-context-info">*Only xlsx files are allowed.</P>
+    <kendo-upload
+      [restrictions]="this.uploadFileRestrictions"
+      [saveUrl]="this.uploadSaveUrl"
+      [multiple]="false"
+      [autoUpload]="false"
+      name="dataFile"
+      (success)="this.success($event)"
     >
-      <kendo-textbox
-        [formControl]="formGroup.get(column.field)"
-        (blur)="this.onBlurRemoveWhiteSpace(formGroup, column.field)"
-        [showSuccessIcon]="!formGroup.get(column.field).invalid"
-        showErrorIcon="initial"
-      ></kendo-textbox>
-
-      <kendo-formerror
-        *ngIf="
-          formGroup.controls[column.field].dirty &&
-          formGroup.controls[column.field].errors?.required
-        "
-        >Error: Name is required.</kendo-formerror
-      >
-      <kendo-formerror
-        *ngIf="
-          formGroup.controls[column.field].dirty &&
-          formGroup.controls[column.field].errors?.maxlength
-        "
-        >Error: Character limit is 30.</kendo-formerror
-      >
-    </ng-template>
-  </kendo-grid-column>
-
-  <!-- Column Email -->
-  <kendo-grid-column
-    field="email"
-    title="Email"
-    [headerClass]="'headerCustomClass'"
-  >
-    <ng-template
-      kendoGridEditTemplate
-      let-column="column"
-      let-formGroup="formGroup"
+    </kendo-upload>
+    <kendo-grid
+      [data]="this.view | async"
+      [pageSize]="this.gridState.take"
+      [skip]="this.gridState.skip"
+      [sort]="this.gridState.sort"
+      [pageable]="{
+        info: info,
+        type: type,
+        pageSizes: pageSizes,
+        previousNext: previousNext,
+        position: position
+      }"
+      (pageChange)="pageChange($event)"
+      [sortable]="false"
+      (dataStateChange)="this.onStateChange($event)"
+      (edit)="this.editHandler($event)"
+      (cancel)="this.cancelHandler($event)"
+      (save)="this.saveHandler($event)"
+      (remove)="this.removeHandler($event)"
+      (add)="this.addHandler($event)"
+      [navigable]="true"
+      [loading]="!this.editService?.querySubscription?.closed"
+      [sortable]="this.sortSettings"
     >
-      <kendo-textbox
-        [formControl]="formGroup.get(column.field)"
-        [showSuccessIcon]="!formGroup.get(column.field).invalid"
-        showErrorIcon="initial"
-      ></kendo-textbox>
+      <ng-template kendoGridToolbarTemplate>
+        <button kendoGridAddCommand>Add new</button>
+      </ng-template>
 
-      <kendo-formerror
-        *ngIf="
-          formGroup.controls[column.field].dirty &&
-          formGroup.controls[column.field].errors?.required
-        "
-        >Error: Email is required.</kendo-formerror
+      <!-- Column ID -->
+      <kendo-grid-column
+        field="id"
+        title="ID"
+        [editable]="false"
+        [headerClass]="'headerCustomClass'"
+        [width]="150"
       >
-      <kendo-formerror
-        *ngIf="
-          formGroup.controls[column.field].dirty &&
-          formGroup.controls[column.field].errors?.pattern
-        "
-        >Error: Email is invalid.</kendo-formerror
+        <ng-template kendoGridCellTemplate let-dataItem>
+          {{
+            ((dataItem || {}).id || "").length > 6
+              ? (dataItem.id | slice: 0:6) + ".."
+              : dataItem.id
+          }}
+        </ng-template>
+      </kendo-grid-column>
+
+      <!-- Column Name -->
+      <kendo-grid-column
+        field="name"
+        title="Name"
+        [headerClass]="'headerCustomClass'"
       >
-    </ng-template>
-  </kendo-grid-column>
+        <ng-template
+          kendoGridEditTemplate
+          let-column="column"
+          let-formGroup="formGroup"
+        >
+          <kendo-textbox
+            [formControl]="formGroup.get(column.field)"
+            (blur)="this.onBlurRemoveWhiteSpace(formGroup, column.field)"
+            [showSuccessIcon]="!formGroup.get(column.field).invalid"
+            showErrorIcon="initial"
+          ></kendo-textbox>
 
-  <!-- Column Dob -->
-  <kendo-grid-column
-    field="dob"
-    title="Dob"
-    editor="date"
-    [headerClass]="'headerCustomClass'"
-  >
-    <ng-template kendoGridCellTemplate let-dataItem>
-      {{ (dataItem || {}).dob | date: "MMMM d, y" }}
-    </ng-template>
+          <kendo-formerror
+            *ngIf="
+              formGroup.controls[column.field].touched &&
+              formGroup.controls[column.field].errors?.required
+            "
+            >Error: Name is required.</kendo-formerror
+          >
+          <kendo-formerror
+            *ngIf="
+              formGroup.controls[column.field].dirty &&
+              formGroup.controls[column.field].errors?.maxlength
+            "
+            >Error: Character limit is 30.</kendo-formerror
+          >
+        </ng-template>
+      </kendo-grid-column>
 
-    <ng-template
-      kendoGridEditTemplate
-      let-column="column"
-      let-formGroup="formGroup"
-    >
-      <kendo-datepicker
-        [formControl]="formGroup.get(column.field)"
-        [max]="this.defaultDateObj"
-      ></kendo-datepicker>
-      <kendo-formerror
-        *ngIf="
-          formGroup.controls[column.field].dirty &&
-          formGroup.controls[column.field].errors?.required
-        "
-        >Error: Date is required.</kendo-formerror
+      <!-- Column Email -->
+      <kendo-grid-column
+        field="email"
+        title="Email"
+        [headerClass]="'headerCustomClass'"
       >
-      <kendo-formerror
-        *ngIf="
-          formGroup.controls[column.field].dirty &&
-          (formGroup.controls[column.field].errors?.minError ||
-            formGroup.controls[column.field].errors?.maxError)
-        "
-        >Error: Date is invalid.</kendo-formerror
+        <ng-template
+          kendoGridEditTemplate
+          let-column="column"
+          let-formGroup="formGroup"
+        >
+          <kendo-textbox
+            [formControl]="formGroup.get(column.field)"
+            [showSuccessIcon]="!formGroup.get(column.field).invalid"
+            showErrorIcon="initial"
+          ></kendo-textbox>
+
+          <kendo-formerror
+            *ngIf="
+              formGroup.controls[column.field].touched &&
+              formGroup.controls[column.field].errors?.required
+            "
+            >Error: Email is required.</kendo-formerror
+          >
+          <kendo-formerror
+            *ngIf="
+              formGroup.controls[column.field].touched &&
+              formGroup.controls[column.field].errors?.pattern
+            "
+            >Error: Email is invalid.</kendo-formerror
+          >
+        </ng-template>
+      </kendo-grid-column>
+
+      <!-- Column Dob -->
+      <kendo-grid-column
+        field="dob"
+        title="Dob"
+        editor="date"
+        [headerClass]="'headerCustomClass'"
       >
-    </ng-template>
-  </kendo-grid-column>
+        <ng-template kendoGridCellTemplate let-dataItem>
+          {{ (dataItem || {}).dob | date: "MMMM d, y" }}
+        </ng-template>
 
-  <!-- Column Age -->
-  <kendo-grid-column
-    field="age"
-    title="Age"
-    [headerClass]="'headerCustomClass'"
-  >
-  </kendo-grid-column>
+        <ng-template
+          kendoGridEditTemplate
+          let-column="column"
+          let-formGroup="formGroup"
+        >
+          <kendo-datepicker
+            [formControl]="formGroup.get(column.field)"
+            [max]="this.defaultDateObj"
+          ></kendo-datepicker>
+          <kendo-formerror
+            *ngIf="
+              formGroup.controls[column.field].touched &&
+              formGroup.controls[column.field].errors?.required
+            "
+            >Error: Date is required.</kendo-formerror
+          >
+          <kendo-formerror
+            *ngIf="
+              formGroup.controls[column.field].touched &&
+              (formGroup.controls[column.field].errors?.minError ||
+                formGroup.controls[column.field].errors?.maxError)
+            "
+            >Error: Date is invalid.</kendo-formerror
+          >
+        </ng-template>
+      </kendo-grid-column>
 
-  <!-- Column Action -->
-  <kendo-grid-command-column
-    title="Action"
-    [width]="250"
-    [headerClass]="'headerCustomClass'"
-  >
-    <ng-template kendoGridCellTemplate let-isNew="isNew">
-      <button kendoGridEditCommand [primary]="true">Edit</button>
-      <button kendoGridRemoveCommand>Remove</button>
-      <button
-        kendoGridSaveCommand
-        [disabled]="this.formGroup?.invalid || false"
-        [primary]="true"
+      <!-- Column Age -->
+      <kendo-grid-column
+        field="age"
+        title="Age"
+        [headerClass]="'headerCustomClass'"
       >
-        {{ isNew ? "Add" : "Update" }}
-      </button>
-      <button kendoGridCancelCommand>
-        {{ isNew ? "Discard" : "Cancel" }}
-      </button>
-    </ng-template>
-  </kendo-grid-command-column>
+      </kendo-grid-column>
 
-  <!-- Loader -->
-  <ng-template kendoGridLoadingTemplate>
-    <div class="k-loading-color"></div>
-    <div class="loading-container">
-      <kendo-loader type="infinite-spinner" size="large"></kendo-loader>
-    </div>
-  </ng-template>
-</kendo-grid>
+      <!-- Column Action -->
+      <kendo-grid-command-column
+        title="Action"
+        [width]="250"
+        [headerClass]="'headerCustomClass'"
+      >
+        <ng-template kendoGridCellTemplate let-isNew="isNew">
+          <button kendoGridEditCommand [primary]="true" class = "edit-btn">Edit</button>
+          <button kendoGridRemoveCommand>Remove</button>
+          <button
+            kendoGridSaveCommand
+            [disabled]="this.formGroup?.invalid || false"
+            [primary]="true"
+            class = "add-update-btn"
+          >
+            {{ isNew ? "Add" : "Update" }}
+          </button>
+          <button kendoGridCancelCommand>
+            {{ isNew ? "Discard" : "Cancel" }}
+          </button>
+        </ng-template>
+      </kendo-grid-command-column>
+
+      <!-- Loader -->
+      <ng-template kendoGridLoadingTemplate>
+        <div class="k-loading-color"></div>
+        <div class="loading-container">
+          <kendo-loader type="infinite-spinner" size="large"></kendo-loader>
+        </div>
+      </ng-template>
+    </kendo-grid>
+  </div>
+</div>

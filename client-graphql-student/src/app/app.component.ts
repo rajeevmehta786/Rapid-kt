@@ -32,9 +32,10 @@ import { PagerType } from '@progress/kendo-angular-grid/pager/pager-settings';
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent implements OnInit {
+  title = `Students' Records`;
   editService: AppService;
   editedRowIndex: number | undefined;
-  view: Observable<GridDataResult> | undefined;
+  public view: Observable<GridDataResult> | undefined;
   uploadForm: FormGroup = new FormGroup({
     fileSource: new FormControl(),
   });
@@ -62,7 +63,7 @@ export class AppComponent implements OnInit {
   };
 
   constructor(
-    @Inject(AppService) editServiceFactory: () => AppService,
+   @Inject(AppService) editServiceFactory: () => AppService,
     private http: HttpClient,
     private socket: Socket
   ) {
@@ -182,10 +183,6 @@ export class AppComponent implements OnInit {
     }
   }
 
-
-  onSortChange = (e: SortDescriptor[]) => {
-    console.log(e);
-  }
 }
 
 
